@@ -1,11 +1,19 @@
 <template>
   <div class="hello">
-    <li v-for="result in results" :key="result.id">{{ result }}</li>
-    
     <h1>{{ msg }}</h1>
+    <li v-for="result in results" :key="result.id">{{ result }}</li>
+    <select v-model="selected">
+      <option value="wss://mainnet.infura.io/ws">Mainnet</option>
+       <option value="wss://ropsten.infura.io/ws">Ropsten</option>
+      <option value="wss://kovan.infura.io/ws">Kovan</option>
+      <option value="wss://rinkeby.infura.io/ws">Rinkeby</option>
+      
+    </select>
+    
      <input type='text' name='address' v-model='text'>
     <br>
     <button @click='post'>click me</button>
+     <button @click='post1'>click me</button>
 
   </div>
 </template>
@@ -20,15 +28,20 @@ export default {
     return {
       msg: "Welcome to Your Vue.js App",
       text: "",
-      results: []
+      results: [],
+      selected: ""
     };
   },
   methods: {
     // サーバーから返ってくる値をログに出力したいのでasyncとawaitを行う
 
     async post() {
+      console.log("yy");
       let element = { text: this.text };
-      let response = await Methods.testPosting(element);
+      let provider = { text: this.selected };
+
+      let response = await Methods.testPosting(element, provider);
+      console.log(response);
       // this.info = response.data.events;
       for (let responses of response.data.events) {
         let data = {
@@ -38,6 +51,11 @@ export default {
         };
         this.results.push(data);
       }
+    },
+    async post1() {
+      let k = { text: this.selected };
+      let element1 = { texttest: "jj" };
+      let response = await Methods.testPosting1(element1, k);
     }
   },
   mounted() {}

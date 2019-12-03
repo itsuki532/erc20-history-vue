@@ -24,19 +24,20 @@ const ABI = [
 // const TOKEN_ADDRESS = "0xB26bBBb8b8b935a605b8b74949934302aAa27F90"; //トークンアドレス指定
 const FROM_BLOCK = 0;
 const TO_BLOCK = "latest";
-const PROVIDER = "wss://rinkeby.infura.io/ws";
-const web3 = new Web3(PROVIDER);
+// const PROVIDER = "wss://rinkeby.infura.io/ws";
 
-app.get("/test1", (req, res) => {
-  console.log("yy");
+app.post("/test1", (req, res) => {
+  console.log(req.body);
   res.send({
     text: "help"
   });
 });
 
 app.post("/test", function(req, res) {
-  //   console.log(web3);
-  const TOKEN_ADDRESS = req.body.text;
+  console.log(req.body.test.text);
+  const TOKEN_ADDRESS = req.body.address.text;
+  const PROVIDER = req.body.test.text;
+  const web3 = new Web3(PROVIDER);
   getTokenTransferHistory(ABI, TOKEN_ADDRESS, FROM_BLOCK, TO_BLOCK);
   async function getTokenTransferHistory(
     abi,
