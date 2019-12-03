@@ -1,5 +1,7 @@
 <template>
   <div class="hello">
+    <li v-for="result in results" :key="result.id">{{ result }}</li>
+    
     <h1>{{ msg }}</h1>
      <input type='text' name='address' v-model='text'>
     <br>
@@ -10,23 +12,36 @@
 
 <script>
 import Methods from "@/api/methods";
+import axios from "axios";
 
 export default {
   name: "HelloWorld",
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
-      text: ""
+      text: "",
+      results: []
     };
   },
   methods: {
     // サーバーから返ってくる値をログに出力したいのでasyncとawaitを行う
+
     async post() {
       let element = { text: this.text };
       let response = await Methods.testPosting(element);
-      console.log(response.data.message);
+      this.info = response.data.events;
+      for (let responses of response.data.events) {
+        let data = {
+          from: responses.returnValues.from,
+          to: responses.returnValues.to,
+          value: responses.returnValues.value //web3.utils.fromWei(event.returnValues.value)
+        };
+        this.results.push(data);
+        console.log(data);
+      }
     }
-  }
+  },
+  mounted() {}
 };
 </script>
 

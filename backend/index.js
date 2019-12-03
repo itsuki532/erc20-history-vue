@@ -21,45 +21,51 @@ const ABI = [
   }
 ];
 
-// const TOKEN_ADDRESS = ""; //トークンアドレス指定
+const TOKEN_ADDRESS = "0xB26bBBb8b8b935a605b8b74949934302aAa27F90"; //トークンアドレス指定
 const FROM_BLOCK = 0;
 const TO_BLOCK = "latest";
 const PROVIDER = "wss://rinkeby.infura.io/ws";
 const web3 = new Web3(PROVIDER);
 
-app.post("/test", function(req, res) {
-  //   console.log(web3);
-  const i = req.body.text;
-  getTokenTransferHistory(ABI, i, FROM_BLOCK, TO_BLOCK);
-
+app.get("/test1", (req, res) => {
+  console.log("yy");
   res.send({
-    message: req.body.text
+    text: "help"
   });
 });
 
-async function getTokenTransferHistory(
-  abi,
-  tokenContractAddress,
-  fromBlock,
-  toBlock
-) {
-  const contract = new web3.eth.Contract(abi, tokenContractAddress);
+app.post("/test", function(req, res) {
+  //   console.log(web3);
+  const i = req.body.text;
+  getTokenTransferHistory(ABI, TOKEN_ADDRESS, FROM_BLOCK, TO_BLOCK);
+  async function getTokenTransferHistory(
+    abi,
+    tokenContractAddress,
+    fromBlock,
+    toBlock
+  ) {
+    const contract = new web3.eth.Contract(abi, tokenContractAddress);
 
-  const events = await contract.getPastEvents("Transfer", {
-    fromBlock: fromBlock,
-    toBlock: toBlock
-  });
-  // console.log(events);
-  if (events) {
-    for (let event of events) {
-      data = {
-        from: event.returnValues.from,
-        to: event.returnValues.to,
-        value: parseInt(event.returnValues.value) / 1000000000000000000 //web3.utils.fromWei(event.returnValues.value)
-      };
-      console.log(data);
+    const events = await contract.getPastEvents("Transfer", {
+      fromBlock: fromBlock,
+      toBlock: toBlock
+    });
+
+    console.log(events);
+    if (events) {
+      for (let event of events) {
+        data = {
+          from: event.returnValues.from,
+          to: event.returnValues.to,
+          value: parseInt(event.returnValues.value) / 1000000000000000000 //web3.utils.fromWei(event.returnValues.value)
+        };
+        console.log(data);
+      }
     }
+    res.send({
+      events
+    });
   }
-}
+});
 
 app.listen(process.env.PORT || 3000);
