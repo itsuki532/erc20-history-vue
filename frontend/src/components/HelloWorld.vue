@@ -29,7 +29,7 @@ export default {
     async post() {
       let element = { text: this.text };
       let response = await Methods.testPosting(element);
-      this.info = response.data.events;
+      // this.info = response.data.events;
       for (let responses of response.data.events) {
         let data = {
           from: responses.returnValues.from,
@@ -37,7 +37,6 @@ export default {
           value: responses.returnValues.value //web3.utils.fromWei(event.returnValues.value)
         };
         this.results.push(data);
-        console.log(data);
       }
     }
   },
