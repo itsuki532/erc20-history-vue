@@ -46,13 +46,13 @@ app.post("/test", function(req, res) {
       toBlock: toBlock
     });
 
-    console.log(events);
+    // console.log(events);
     if (events) {
       for (let event of events) {
         data = {
           from: event.returnValues.from,
           to: event.returnValues.to,
-          value: parseInt(event.returnValues.value) / 1000000000000000000 //web3.utils.fromWei(event.returnValues.value)
+          value: web3.utils.fromWei(event.returnValues.value._hex) //web3.utils.fromWei(event.returnValues.value)
         };
         console.log(data);
       }

@@ -31,6 +31,8 @@
 import Methods from "@/api/methods";
 import axios from "axios";
 
+import Web3 from "web3";
+
 export default {
   name: "HelloWorld",
   data() {
@@ -51,15 +53,18 @@ export default {
       let provider = { text: this.selected };
       let from = { text: this.from };
       let to = { text: this.to };
+      const web3 = new Web3(this.selected);
+      // this.web3 = new Web3();
+      console.log(web3.version);
 
       let response = await Methods.testPosting(element, provider, from, to);
-      console.log(response);
+
       // this.info = response.data.events;
       for (let responses of response.data.events) {
         let data = {
           from: responses.returnValues.from,
           to: responses.returnValues.to,
-          value: responses.returnValues.value //web3.utils.fromWei(event.returnValues.value)
+          value: web3.utils.fromWei(responses.returnValues.value._hex)
         };
         this.results.push(data);
       }
