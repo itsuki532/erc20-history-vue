@@ -21,10 +21,6 @@ const ABI = [
   }
 ];
 
-// const TOKEN_ADDRESS = "0xB26bBBb8b8b935a605b8b74949934302aAa27F90"; //トークンアドレス指定
-
-// const PROVIDER = "wss://rinkeby.infura.io/ws";
-
 app.post("/test", function(req, res) {
   console.log(req.body);
   const TOKEN_ADDRESS = req.body.address.text;

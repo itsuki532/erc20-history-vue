@@ -54,7 +54,6 @@ export default {
       let from = { text: this.from };
       let to = { text: this.to };
       const web3 = new Web3(this.selected);
-      // this.web3 = new Web3();
       console.log(web3.version);
 
       let response = await Methods.testPosting(element, provider, from, to);
